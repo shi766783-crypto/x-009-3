@@ -80,5 +80,22 @@ export const seedItems = [
     status: '闲置',
     serviceRecords: [],
     reminderHandled: false
+  },
+  {
+    id: 'item-lamp',
+    name: '护眼台灯',
+    category: '家电',
+    brandModel: '',
+    channel: '',
+    purchaseDate: '',
+    price: 199,
+    warrantyMonths: 0,
+    invoicePhoto: '',
+    itemPhoto: '',
+    location: '书房',
+    note: '线下随手购入，未保留购买日期与保修信息。',
+    status: '正常使用',
+    serviceRecords: [],
+    reminderHandled: false
   }
 ];

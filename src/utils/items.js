@@ -1,4 +1,4 @@
-import { getWarrantyDaysLeft, getWarrantyEndDate } from './date';
+import { getWarrantyDaysLeft, getWarrantyEndDate, hasWarrantyInfo } from './date';
 
 export function createId(prefix = 'id') {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -29,6 +29,7 @@ export function normalizeItem(raw) {
 }
 
 export function getWarrantyState(item, now = new Date()) {
+  if (!hasWarrantyInfo(item)) return 'none';
   const daysLeft = getWarrantyDaysLeft(item, now);
   if (daysLeft < 0) return 'expired';
   if (daysLeft <= 30) return 'expiring';

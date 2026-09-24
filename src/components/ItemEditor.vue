@@ -87,7 +87,7 @@ function submit() {
       </label>
       <label>
         <span>保修截止日期</span>
-        <input :value="warrantyEndDate" readonly />
+        <input :value="warrantyEndDate" readonly placeholder="填写购买日期与保修期后自动生成" />
       </label>
       <label>
         <span>存放位置</span>

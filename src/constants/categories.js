@@ -21,5 +21,6 @@ export const serviceTypes = ['维修', '保养', '更换配件'];
 export const reminderStates = {
   ok: '保修中',
   expiring: '建议延保',
-  expired: '已过保'
+  expired: '已过保',
+  none: '无保修信息'
 };

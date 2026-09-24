@@ -22,8 +22,12 @@ const reminders = computed(() =>
       daysLeft: getWarrantyDaysLeft(item),
       warrantyState: getWarrantyState(item)
     }))
-    .filter((item) => item.warrantyState !== 'ok')
+    .filter((item) => item.warrantyState === 'expiring' || item.warrantyState === 'expired')
     .sort((a, b) => a.daysLeft - b.daysLeft)
+);
+
+const missingWarrantyItems = computed(() =>
+  props.items.filter((item) => getWarrantyState(item) === 'none')
 );
 </script>
 
@@ -53,6 +57,10 @@ const reminders = computed(() =>
       <article class="metric-card warning">
         <span>已过保</span>
         <strong>{{ stats.expiredCount }}</strong>
+      </article>
+      <article class="metric-card muted">
+        <span>无保修信息</span>
+        <strong>{{ stats.noWarrantyCount }}</strong>
       </article>
       <article class="metric-card">
         <span>本年维修花费</span>
@@ -102,6 +110,22 @@ const reminders = computed(() =>
           <button type="button" class="ghost-button" @click="$emit('handled', item.id)">
             已处理
           </button>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <h3>保修信息待完善</h3>
+          <span>{{ missingWarrantyItems.length }} 件</span>
+        </div>
+        <div v-if="!missingWarrantyItems.length" class="empty-state">所有物品都已填写保修信息。</div>
+        <article v-for="item in missingWarrantyItems" :key="item.id" class="reminder-row">
+          <div>
+            <strong>{{ item.name }}</strong>
+            <p>{{ item.brandModel || '未填写型号' }} · 未填写保修期或购买日期</p>
+          </div>
+          <span class="status-chip none">无保修信息</span>
+          <button type="button" class="ghost-button" @click="$emit('edit', item)">补充信息</button>
         </article>
       </section>
     </div>

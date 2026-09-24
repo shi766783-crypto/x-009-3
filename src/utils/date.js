@@ -35,8 +35,14 @@ export function getWarrantyEndDate(purchaseDate, warrantyMonths) {
   return toInputDate(addMonths(purchaseDate, Number(warrantyMonths)));
 }
 
+export function hasWarrantyInfo(item) {
+  const endDate = item.warrantyEndDate || getWarrantyEndDate(item.purchaseDate, item.warrantyMonths);
+  return Boolean(endDate);
+}
+
 export function getWarrantyDaysLeft(item, now = new Date()) {
   const endDate = item.warrantyEndDate || getWarrantyEndDate(item.purchaseDate, item.warrantyMonths);
+  if (!endDate) return null;
   return diffInDays(now, endDate);
 }
 

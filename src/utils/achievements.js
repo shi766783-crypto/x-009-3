@@ -20,7 +20,10 @@ export function getUnlockedAchievements(items) {
   const records = items.flatMap((item) => item.serviceRecords || []);
   const categories = new Set(items.map((item) => item.category));
   const totalValue = items.reduce((sum, item) => sum + Number(item.price || 0), 0);
-  const warrantyCount = activeItems.filter((item) => getWarrantyState(item) !== 'expired').length;
+  const warrantyCount = activeItems.filter((item) => {
+    const state = getWarrantyState(item);
+    return state === 'ok' || state === 'expiring';
+  }).length;
   const unhandledExpired = activeItems.some(
     (item) => getWarrantyState(item) === 'expired' && !item.reminderHandled
   );

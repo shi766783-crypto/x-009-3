@@ -7,8 +7,13 @@ export function getDashboardStats(items) {
   const activeItems = items.filter((item) => !isArchived(item));
   const totalValue = activeItems.reduce((sum, item) => sum + Number(item.price || 0), 0);
   const residualValue = activeItems.reduce((sum, item) => sum + getResidualValue(item), 0);
-  const warrantyCount = activeItems.filter((item) => getWarrantyState(item) !== 'expired').length;
+  const warrantyCount = activeItems.filter(
+    (item) => getWarrantyState(item) === 'ok' || getWarrantyState(item) === 'expiring'
+  ).length;
   const expiredCount = activeItems.filter((item) => getWarrantyState(item) === 'expired').length;
+  const noWarrantyCount = activeItems.filter(
+    (item) => getWarrantyState(item) === 'none'
+  ).length;
   const currentYear = new Date().getFullYear();
   const yearlyServiceCost = items
     .flatMap((item) => item.serviceRecords || [])
@@ -22,6 +27,7 @@ export function getDashboardStats(items) {
     residualValue,
     warrantyCount,
     expiredCount,
+    noWarrantyCount,
     yearlyServiceCost
   };
 }

@@ -170,7 +170,7 @@ button {
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
 }
 
@@ -203,6 +203,12 @@ button {
   color: #b45309;
 }
 
+.metric-card.muted {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  border-style: dashed;
+}
+
 .soft-pill,
 .status-chip {
   display: inline-flex;
@@ -229,6 +235,12 @@ button {
 .status-chip.expired {
   color: #b91c1c;
   background: #fee2e2;
+}
+
+.status-chip.none {
+  color: #475569;
+  background: #e2e8f0;
+  border: 1px dashed #94a3b8;
 }
 
 .form-grid {
@@ -536,7 +548,7 @@ textarea:focus {
 
 @media (max-width: 1180px) {
   .metric-grid {
-    grid-template-columns: repeat(3, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   .two-column,

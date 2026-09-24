@@ -40,8 +40,14 @@ defineEmits(['select', 'edit', 'status']);
             </div>
             <p>{{ item.brandModel || '未填写型号' }} · {{ item.location || '未定位' }}</p>
             <p>
-              保修 {{ getWarrantyDaysLeft(item) >= 0 ? '剩余' : '过期' }}
-              {{ Math.abs(getWarrantyDaysLeft(item)) }} 天 · 残值
+              <template v-if="getWarrantyDaysLeft(item) === null">
+                保修信息未填写
+              </template>
+              <template v-else>
+                保修 {{ getWarrantyDaysLeft(item) >= 0 ? '剩余' : '过期' }}
+                {{ Math.abs(getWarrantyDaysLeft(item)) }} 天
+              </template>
+              · 残值
               {{ formatCurrency(getResidualValue(item)) }}
             </p>
           </div>
