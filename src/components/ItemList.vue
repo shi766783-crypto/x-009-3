@@ -1,8 +1,8 @@
 <script setup>
 import { reminderStates } from '../constants/categories';
 import { getResidualValue } from '../utils/depreciation';
-import { formatCurrency, getWarrantyDaysLeft } from '../utils/date';
-import { getWarrantyState } from '../utils/items';
+import { formatCurrency } from '../utils/date';
+import { getWarrantyDetail, getWarrantyState } from '../utils/items';
 
 defineProps({
   activeItems: { type: Array, required: true },
@@ -40,8 +40,7 @@ defineEmits(['select', 'edit', 'status']);
             </div>
             <p>{{ item.brandModel || '未填写型号' }} · {{ item.location || '未定位' }}</p>
             <p>
-              保修 {{ getWarrantyDaysLeft(item) >= 0 ? '剩余' : '过期' }}
-              {{ Math.abs(getWarrantyDaysLeft(item)) }} 天 · 残值
+              {{ getWarrantyDetail(item) }} · 残值
               {{ formatCurrency(getResidualValue(item)) }}
             </p>
           </div>

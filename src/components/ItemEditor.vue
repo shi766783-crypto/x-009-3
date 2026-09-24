@@ -87,7 +87,11 @@ function submit() {
       </label>
       <label>
         <span>保修截止日期</span>
-        <input :value="warrantyEndDate" readonly />
+        <input
+          :value="warrantyEndDate"
+          :placeholder="form.purchaseDate ? '未填保修期，无法计算' : '缺少购买日期，无法计算'"
+          readonly
+        />
       </label>
       <label>
         <span>存放位置</span>

@@ -22,8 +22,12 @@ const reminders = computed(() =>
       daysLeft: getWarrantyDaysLeft(item),
       warrantyState: getWarrantyState(item)
     }))
-    .filter((item) => item.warrantyState !== 'ok')
+    .filter((item) => item.warrantyState === 'expiring' || item.warrantyState === 'expired')
     .sort((a, b) => a.daysLeft - b.daysLeft)
+);
+
+const noWarrantyItems = computed(() =>
+  props.items.filter((item) => getWarrantyState(item) === 'none')
 );
 </script>
 
@@ -53,6 +57,10 @@ const reminders = computed(() =>
       <article class="metric-card warning">
         <span>已过保</span>
         <strong>{{ stats.expiredCount }}</strong>
+      </article>
+      <article class="metric-card muted" :class="{ warning: stats.noWarrantyCount > 0 }">
+        <span>无保修信息</span>
+        <strong>{{ stats.noWarrantyCount }}</strong>
       </article>
       <article class="metric-card">
         <span>本年维修花费</span>
@@ -85,9 +93,12 @@ const reminders = computed(() =>
       <section class="panel">
         <div class="section-title">
           <h3>保修提醒</h3>
-          <span>{{ reminders.length }} 条</span>
+          <span>{{ reminders.length }} 条到期提醒 · {{ noWarrantyItems.length }} 条待补全</span>
         </div>
-        <div v-if="!reminders.length" class="empty-state">暂无即将到期或已过保物品。</div>
+        <div v-if="!reminders.length && !noWarrantyItems.length" class="empty-state">
+          暂无即将到期、已过保或缺少保修信息的物品。
+        </div>
+
         <article v-for="item in reminders" :key="item.id" class="reminder-row">
           <div>
             <strong>{{ item.name }}</strong>
@@ -103,6 +114,21 @@ const reminders = computed(() =>
             已处理
           </button>
         </article>
+
+        <div v-if="noWarrantyItems.length" class="missing-warranty-block">
+          <h4>保修信息待补全</h4>
+          <p class="block-hint">以下物品缺少购买日期或保修期，暂无法判断保修状态。</p>
+          <article v-for="item in noWarrantyItems" :key="item.id" class="reminder-row">
+            <div>
+              <strong>{{ item.name }}</strong>
+              <p>{{ item.brandModel || '未填写型号' }} · 购买日期或保修期未填写</p>
+            </div>
+            <span class="status-chip none">无保修信息</span>
+            <button type="button" class="ghost-button" @click="$emit('edit', item)">
+              去补全
+            </button>
+          </article>
+        </div>
       </section>
     </div>
 

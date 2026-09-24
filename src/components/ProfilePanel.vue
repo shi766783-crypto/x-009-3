@@ -49,6 +49,10 @@ const reminders = computed(() =>
         <span>保修提醒</span>
         <strong>{{ reminders.length }}</strong>
       </article>
+      <article class="metric-card muted" :class="{ warning: stats.noWarrantyCount > 0 }">
+        <span>无保修信息</span>
+        <strong>{{ stats.noWarrantyCount }}</strong>
+      </article>
       <article class="metric-card">
         <span>折旧后资产</span>
         <strong>{{ formatCurrency(stats.residualValue) }}</strong>

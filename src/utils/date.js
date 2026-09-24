@@ -37,6 +37,7 @@ export function getWarrantyEndDate(purchaseDate, warrantyMonths) {
 
 export function getWarrantyDaysLeft(item, now = new Date()) {
   const endDate = item.warrantyEndDate || getWarrantyEndDate(item.purchaseDate, item.warrantyMonths);
+  if (!endDate) return null;
   return diffInDays(now, endDate);
 }
 
